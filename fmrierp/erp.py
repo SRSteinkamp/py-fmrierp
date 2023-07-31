@@ -1,3 +1,5 @@
+from typing import List
+
 import numpy as np
 import pandas as pd
 from nibabel.nifti1 import Nifti1Image
@@ -76,7 +78,29 @@ def extract_timeseries(fmri_data, masker):
     return data
 
 
-def create_extraction_window(window, t_r):
+def create_extraction_window(window: List, t_r: float) -> np.array:
+    """Converts the input window, defined in s, to indices.
+
+    Parameters
+    ----------
+    window : List
+        window in seconds
+    t_r : float
+        Repetition time of signal
+
+    Returns
+    -------
+    np.array
+        Rounded window
+
+    Raises
+    ------
+    ValueError
+        Checks if window has the correct size
+    """
+
+    if len(window) != 2:
+        raise ValueError("window has to be a list of length 2")
 
     window = np.array(window)
     window = window / t_r  # TR as sampling rate
